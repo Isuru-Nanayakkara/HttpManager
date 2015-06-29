@@ -31,3 +31,9 @@ DerivedData
 # Carthage/Checkouts
 
 Carthage/Build
+
+# AppCode
+.idea/
+
+# General
+.DS_Store
