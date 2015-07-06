@@ -97,13 +97,12 @@ public class HttpManager: NSObject {
     
     :param: completionHandler
     */
-    public func execute(completionHandler: (result: AnyObject!, error: NSError?) -> ()) {
+    public func execute(completionHandler: (result: NSData!, error: NSError?) -> ()) {
         session.dataTaskWithRequest(makeRequest(), completionHandler: { (data, response, error) -> Void in
             if let error = error {
                 completionHandler(result: nil, error: error)
             } else {
-                let json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments, error: nil)
-                completionHandler(result: json, error: nil)
+                completionHandler(result: data, error: nil)
             }
         }).resume()
     }
