@@ -160,6 +160,7 @@
 		D3C38AD81B4193F5009932C3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = BitInvent;
 				TargetAttributes = {
@@ -416,6 +417,7 @@
 				D3C38B011B4193F6009932C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D3C38B021B4193F6009932C3 /* Build configuration list for PBXNativeTarget "HttpManagerTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +426,7 @@
 				D3C38B041B4193F6009932C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

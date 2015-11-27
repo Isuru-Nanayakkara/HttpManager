@@ -124,9 +124,8 @@ public class HttpManager: NSObject {
 }
 
 extension HttpManager: NSURLSessionDelegate {
-    public func URLSession(session: NSURLSession, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
-        
-        completionHandler(.UseCredential, NSURLCredential(forTrust: challenge.protectionSpace.serverTrust))
+    public func URLSession(session: NSURLSession, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
+        completionHandler(.UseCredential, NSURLCredential(forTrust: challenge.protectionSpace.serverTrust!))
     }
 }
 
@@ -147,7 +146,7 @@ extension Dictionary {
             
             parameters.append("\(escapedKey)=\(escapedValue)")
         }
-        return join("&", parameters)
+        return parameters.joinWithSeparator("&")
     }
 }
 

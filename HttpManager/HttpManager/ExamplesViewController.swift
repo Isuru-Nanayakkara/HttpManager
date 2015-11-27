@@ -20,38 +20,38 @@ class ExamplesViewController: UITableViewController {
         case 0:
             let url = "http://httpbin.org/get"
             
-            HttpManager.get(url).execute({ (result, error) -> () in
-                println(result)
-            })
+            HttpManager.get(url).execute { result, error in
+                print(result)
+            }
             
         case 1:
             let url = "http://httpbin.org/get"
             let params = ["show_env": 1]
             
-            HttpManager.get(url).parameters(params).execute({ (result, error) -> () in
-                println(result)
-            })
+            HttpManager.get(url).parameters(params).execute { result, error in
+                print(result)
+            }
             
         case 2:
             let url = "http://httpbin.org/headers"
             let header = ["X-Custom-Header": "Hello World"]
             
-            HttpManager.get(url).headers(header).execute({ (result, error) -> () in
-                println(result)
-            })
+            HttpManager.get(url).headers(header).execute { result, error in
+                print(result)
+            }
             
         case 3:
             let url = "http://httpbin.org/post"
-            HttpManager.post(url).execute({ (result, error) -> () in
-                println(result)
-            })
+            HttpManager.post(url).execute { result, error in
+                print(result)
+            }
             
         case 4:
             let url = "http://httpbin.org/post"
             let bodyData = ["now": NSDate()]
-            HttpManager.post(url).data(bodyData).execute({ (result, error) -> () in
-                println(result)
-            })
+            HttpManager.post(url).data(bodyData).execute { result, error in
+                print(result)
+            }
             
         default:
             break
