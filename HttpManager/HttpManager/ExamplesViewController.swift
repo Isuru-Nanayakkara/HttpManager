@@ -15,7 +15,7 @@ class ExamplesViewController: UITableViewController {
         
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
             let url = "http://httpbin.org/get"
@@ -48,7 +48,7 @@ class ExamplesViewController: UITableViewController {
             
         case 4:
             let url = "http://httpbin.org/post"
-            let bodyData = ["now": NSDate()]
+            let bodyData = ["now": Date()]
             HttpManager.post(url).data(bodyData).execute { result, error in
                 print(result)
             }

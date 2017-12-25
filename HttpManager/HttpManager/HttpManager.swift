@@ -1,6 +1,6 @@
 import Foundation
 
-public class HttpManager: NSObject {
+open class HttpManager: NSObject {
     
     /**
     HTTP methods.
@@ -8,25 +8,25 @@ public class HttpManager: NSObject {
     - POST
     - GET
     */
-    private enum HTTPMethod: String {
+    fileprivate enum HTTPMethod: String {
         case POST = "POST"
         case GET = "GET"
     }
     
-    private var url: String
-    private var httpMethod: HTTPMethod
-    private var request: NSMutableURLRequest!
-    private var session: NSURLSession!
+    fileprivate var url: String
+    fileprivate var httpMethod: HTTPMethod
+    fileprivate var request: NSMutableURLRequest!
+    fileprivate var session: Foundation.URLSession!
     
     // MARK: - Initializers
     
-    private init(method: HTTPMethod, url: String) {
+    fileprivate init(method: HTTPMethod, url: String) {
         self.url = url
         self.httpMethod = method
         
         super.init()
         
-        session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: self, delegateQueue: nil)
+        session = Foundation.URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
         request = NSMutableURLRequest()
     }
     
@@ -39,7 +39,7 @@ public class HttpManager: NSObject {
     
     :returns:
     */
-    public class func post(url: String) -> HttpManager {
+    open class func post(_ url: String) -> HttpManager {
         return HttpManager(method: .POST, url: url)
     }
     
@@ -50,7 +50,7 @@ public class HttpManager: NSObject {
     
     :returns:
     */
-    public class func get(url: String) -> HttpManager {
+    open class func get(_ url: String) -> HttpManager {
         return HttpManager(method: .GET, url: url)
     }
     
@@ -61,7 +61,7 @@ public class HttpManager: NSObject {
     
     :returns:
     */
-    public func parameters(parameters: [String: AnyObject]) -> HttpManager {
+    open func parameters(_ parameters: [String: Any]) -> HttpManager {
         url = url + "?" + parameters.stringForHttpParameters()
         return self
     }
@@ -73,7 +73,7 @@ public class HttpManager: NSObject {
     
     :returns:
     */
-    public func headers(headers: [String: String]) -> HttpManager {
+    open func headers(_ headers: [String: String]) -> HttpManager {
         for (key, value) in headers {
             request.addValue(value, forHTTPHeaderField: key)
         }
@@ -87,8 +87,8 @@ public class HttpManager: NSObject {
     
     :returns:
     */
-    public func data(data: [String: AnyObject]) -> HttpManager {
-        request.HTTPBody = data.stringForHttpParameters().dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+    open func data(_ data: [String: Any]) -> HttpManager {
+        request.httpBody = data.stringForHttpParameters().data(using: String.Encoding.utf8, allowLossyConversion: false)
         return self
     }
     
@@ -97,12 +97,12 @@ public class HttpManager: NSObject {
     
     :param: completionHandler
     */
-    public func execute(completionHandler: (result: NSData!, error: NSError?) -> ()) {
-        session.dataTaskWithRequest(makeRequest(), completionHandler: { (data, response, error) -> Void in
+    open func execute(_ completionHandler: @escaping (_ result: Data?, _ error: NSError?) -> ()) {
+        session.dataTask(with: makeRequest(), completionHandler: { (data, response, error) -> Void in
             if let error = error {
-                completionHandler(result: nil, error: error)
+                completionHandler(nil, error as NSError)
             } else {
-                completionHandler(result: data, error: nil)
+                completionHandler(data, nil)
             }
         }).resume()
     }
@@ -115,17 +115,17 @@ public class HttpManager: NSObject {
     
     :returns: request
     */
-    private func makeRequest() -> NSURLRequest {
-        request.URL = NSURL(string: url)
-        request.HTTPMethod = httpMethod.rawValue
+    fileprivate func makeRequest() -> URLRequest {
+        request.url = URL(string: url)
+        request.httpMethod = httpMethod.rawValue
         
-        return request.copy() as! NSURLRequest
+        return request.copy() as! URLRequest
     }
 }
 
-extension HttpManager: NSURLSessionDelegate {
-    public func URLSession(session: NSURLSession, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
-        completionHandler(.UseCredential, NSURLCredential(forTrust: challenge.protectionSpace.serverTrust!))
+extension HttpManager: URLSessionDelegate {
+    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        completionHandler(.useCredential, URLCredential(trust: challenge.protectionSpace.serverTrust!))
     }
 }
 
@@ -146,7 +146,7 @@ extension Dictionary {
             
             parameters.append("\(escapedKey)=\(escapedValue)")
         }
-        return parameters.joinWithSeparator("&")
+        return parameters.joined(separator: "&")
     }
 }
 
@@ -158,8 +158,8 @@ extension String {
     :returns: Percent escaped string
     */
     func percentEscapedString() -> String? {
-        let characterSet = NSMutableCharacterSet.alphanumericCharacterSet()
-        characterSet.addCharactersInString("-._~")
-        return stringByAddingPercentEncodingWithAllowedCharacters(characterSet)
+        let characterSet = NSMutableCharacterSet.alphanumeric()
+        characterSet.addCharacters(in: "-._~")
+        return addingPercentEncoding(withAllowedCharacters: characterSet as CharacterSet)
     }
 }
