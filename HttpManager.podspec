@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'HttpManager'
-  spec.version = '0.1.0'
+  spec.version = '0.2.0'
   spec.summary = 'A small library to handle HTTP requests.'
   spec.homepage = 'https://github.com/Isuru-Nanayakkara/HttpManager'
   spec.license = 'MIT'
